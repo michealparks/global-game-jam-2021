@@ -62,8 +62,12 @@ const handleMouseDown = (e: MouseEvent) => {
 const handleMouseUp = (e: MouseEvent) => {
   const x = (e.clientX / window.innerWidth) * 2 - 1
   const y = -(e.clientY / window.innerHeight) * 2 + 1
+  const absX = Math.abs(x - down.x)
+  const absY = Math.abs(y - down.y)
+
+  console.log(absX, absY)
   
-  if (x !== down.x || y !== down.y) {
+  if (absX > 0.02 || absY > 0.02) {
     return
   }
 

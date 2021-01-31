@@ -20,7 +20,7 @@ const target = new Vector3()
 const offset = 0.01
 
 const update = (dt: number) => {
-  time += (dt * 0.00001)
+  time += (dt * 0.000008)
 
   for (const [path, object] of objects) {
     const { curve, curveObject } = paths.get(path)
@@ -39,6 +39,7 @@ const update = (dt: number) => {
     object.lookAt(target)
 
     object.position.lerpVectors(position, target, 0.5)
+    object.position.y += 0.4
     
     object.userData.pathCompletion = time % 1
   }
