@@ -1,12 +1,25 @@
 import {
   Object3D,
+  Audio,
   PositionalAudio
 } from 'three'
 
 import { gl } from './gl'
 import { assets } from './assets'
 
-const sounds = new Map<string, PositionalAudio>()
+const audios = new Map<string, Audio>()
+const positionals = new Map<string, PositionalAudio>()
+
+const create = (file: string, loop = true, volume = 1) => {
+  console.log(assets.get(file))
+  const buffer = assets.get(file)
+  const sound = new Audio(gl.listener)
+  sound.setBuffer(buffer)
+  sound.setLoop(loop)
+  sound.setVolume(volume)
+  audios.set(file, sound)
+  return audio
+}
 
 const createPositional = async (file: string, parent: Object3D, refDistance = 1, loop = true, volume = 1) => {
   const buffer = assets.get(file)
@@ -15,12 +28,17 @@ const createPositional = async (file: string, parent: Object3D, refDistance = 1,
   sound.setRefDistance(refDistance)
   sound.setLoop(loop)
   sound.setVolume(volume)
-  sounds.set(file, sound)
+  positionals.set(file, sound)
   parent.add(sound)
+  return audio
 }
 
 const get = (key: string) => {
-  const audio = sounds.get(key)
+  let audio: any = positionals.get(key)
+
+  if (audio === undefined) {
+    audio = audios.get(key)
+  }
 
   if (audio === undefined) {
     throw new Error(`Audio ${key} is undefined.`)
@@ -46,9 +64,10 @@ const stop = (key: string) => {
 }
 
 export const audio = {
+  create,
   createPositional,
+  play,
   get,
   setLoop,
-  play,
   stop
 }

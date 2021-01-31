@@ -1,13 +1,21 @@
+import { Group } from '@tweenjs/tween.js'
 import type {
-  Object3D,
   Quaternion,
-  Vector3
 } from 'three'
 
+import { Object3D, Vector3 } from 'three'
 import { gl } from '../core/gl'
 import { environment } from './environment'
 
+const vec3 = new Vector3()
+
 const addables = new Map<string, Object3D>()
+const selectionMenu = new Object3D()
+selectionMenu.name = 'Selection Menu'
+gl.camera.add(selectionMenu)
+gl.camera.getWorldDirection(vec3)
+console.log(vec3)
+selectionMenu.position.add(vec3)
 
 const addToWorld = (name: string, pos: Vector3, rot: Quaternion) => {
   const addable = addables.get(name)
@@ -24,6 +32,7 @@ const addToWorld = (name: string, pos: Vector3, rot: Quaternion) => {
   addable.quaternion.copy(rot)
 
   environment.registerPlant(addable)
+  selectionMenu.add(addable.clone())
 
   return addable
 }

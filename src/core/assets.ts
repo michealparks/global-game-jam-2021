@@ -14,7 +14,7 @@ const audioLoader = new AudioLoader()
 const gltfLoader = new GLTFLoader()
 
 textureLoader.setPath('assets/textures/')
-audioLoader.setPath('assets/audio/')
+audioLoader.setPath('assets/mp3/')
 gltfLoader.setPath('assets/glb/')
 
 const queued = new Set<string>()
@@ -36,6 +36,10 @@ const loadTexture = async (file: string) => {
   cache.set(file, await textureLoader.loadAsync(file))
 }
 
+const loadAudio = async (file: string) => {
+  cache.set(file, await audioLoader.loadAsync(file))
+}
+
 const loadGLTF = async (file: string) => {
   cache.set(file, await gltfLoader.loadAsync(file))
 }
@@ -54,10 +58,11 @@ const loadSprite = async (file: string) => {
 }
 
 const loadOne = (file: string) => {
+  console.log(file)
   switch (file.split('.').pop()) {
     case 'glb': return loadGLTF(file)
     case 'png': return loadTexture(file)
-    case 'mp3': return audioLoader.loadAsync(file)
+    case 'mp3': return loadAudio(file)
     case 'json': return loadJSON(file)
     case 'sprite': return loadSprite(file)
     case 'obj': return loadObj(file)

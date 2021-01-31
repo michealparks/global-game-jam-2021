@@ -20,7 +20,7 @@ const target = new Vector3()
 const offset = 0.01
 
 const update = (dt: number) => {
-  time += (dt * 0.000008)
+  time += (dt * 0.00001)
 
   for (const [path, object] of objects) {
     const { curve, curveObject } = paths.get(path)
