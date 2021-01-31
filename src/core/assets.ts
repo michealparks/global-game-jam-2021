@@ -27,6 +27,11 @@ const loadJSON = async (file: string) => {
   cache.set(file, await response.json())
 }
 
+const loadObj = async (file: string) => {
+  const response = await fetch(`assets/obj/${file}`)
+  cache.set(file, await response.text())
+}
+
 const loadTexture = async (file: string) => {
   cache.set(file, await textureLoader.loadAsync(file))
 }
@@ -55,6 +60,7 @@ const loadOne = (file: string) => {
     case 'mp3': return audioLoader.loadAsync(file)
     case 'json': return loadJSON(file)
     case 'sprite': return loadSprite(file)
+    case 'obj': return loadObj(file)
   }
 }
 

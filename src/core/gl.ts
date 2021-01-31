@@ -10,7 +10,8 @@ import {
   AmbientLight,
   AudioListener,
   Camera,
-  OrthographicCamera
+  OrthographicCamera,
+  Fog
 } from 'three'
 
 import {
@@ -33,9 +34,12 @@ import Stats from '@drecom/stats.js'
 import TWEEN from '@tweenjs/tween.js'
 
 import {
-  CLEARCOLOR,
+  COLOR_AMBIENT_LIGHT,
+  COLOR_FOG,
   EXPOSURE,
   FAR,
+  FOG_FAR,
+  FOG_NEAR,
   FOV,
   NEAR,
   SHADOWMAP
@@ -55,7 +59,7 @@ renderer.outputEncoding = sRGBEncoding
 renderer.physicallyCorrectLights = true
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = SHADOWMAP
-renderer.setClearColor(CLEARCOLOR)
+renderer.setClearColor(COLOR_FOG)
 document.body.append(renderer.domElement)
 
 let fn: Tick
@@ -66,8 +70,12 @@ const canvas = renderer.domElement
 const composer = new EffectComposer(renderer, {
   frameBufferType: HalfFloatType
 })
+
 const scene = new Scene()
-let camera: PerspectiveCamera | OrthographicCamera = new PerspectiveCamera(FOV, window.innerWidth / window.innerHeight, NEAR, FAR)
+const fog = new Fog(COLOR_FOG, FOG_NEAR, FOG_FAR)
+scene.fog = fog
+
+let camera: PerspectiveCamera = new PerspectiveCamera(FOV, window.innerWidth / window.innerHeight, NEAR, FAR)
 const listener = new AudioListener()
 scene.add(camera)
 camera.add(listener)
@@ -76,9 +84,8 @@ if (import.meta.env.MODE === 'development') {
   document.body.appendChild(stats.dom)
 }
 
-const color = '#afe3f3'
 const intensity = 1.0
-const ambientLight = new AmbientLight(color, intensity)
+const ambientLight = new AmbientLight(COLOR_AMBIENT_LIGHT, intensity)
 scene.add(ambientLight)
 
 const init = async () => {
@@ -127,15 +134,7 @@ const render = () => {
   if (canvas.width === width && canvas.height === height) {
     composer.render(dt)
   } else {
-    if (camera instanceof PerspectiveCamera) {
-      camera.aspect = width / height
-    } else if (camera instanceof OrthographicCamera) {
-      camera.left = -width / zoom
-      camera.right = width / zoom
-      camera.top = height / zoom
-      camera.bottom = -height / zoom
-    }
-    
+    camera.aspect = width / height
     camera.updateProjectionMatrix()
     renderer.setSize(width, height, false)
     composer.setSize(width, height, false)
@@ -151,14 +150,6 @@ const setAnimationLoop = (frame: Tick) => {
   renderer.setAnimationLoop(render)
 }
 
-const setCamera = (newCamera: PerspectiveCamera | OrthographicCamera) => {
-  camera = newCamera
-
-  if (camera.getObjectById(listener.id) === undefined) {
-    camera.add(listener)
-  }
-}
-
 export const gl = {
   stats,
   renderer,
@@ -168,6 +159,5 @@ export const gl = {
   ambientLight,
   listener,
   init,
-  setAnimationLoop,
-  setCamera
+  setAnimationLoop
 }

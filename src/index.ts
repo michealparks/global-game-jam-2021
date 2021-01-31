@@ -1,63 +1,56 @@
-import {
-  BoxGeometry,
-  MeshStandardMaterial,
-  Mesh,
-  Vector3
-} from 'three'
-
-import { orbitControls } from './controls/orbit'
-import { keyboardControls } from './controls/keyboard'
-import { physics } from './core/physics'
+import { Vector3 } from 'three'
 import { gl } from './core/gl'
 import { assets } from './core/assets'
 import { GLTF } from './core/gltf'
-
-{
-  const geometry = new BoxGeometry()
-  const material = new MeshStandardMaterial({ color: 0x00ff00 })
-  const cube = new Mesh(geometry, material)
-  cube.position.y = 5
-  cube.castShadow = true
-  cube.receiveShadow = true
-  gl.scene.add(cube)
-}
-
-const keyControls = keyboardControls()
-const debugControls = orbitControls(gl.camera, gl.canvas)
-
-const frame = (dt: number) => {
-  // physics.tick(dt * 0.001)
-  debugControls.update()
-}
+import { orbitControls } from './controls/orbit'
+import { mouseControls } from './controls/mouse'
+import { animation } from './core/animation'
+import { text } from './core/text'
+import { path } from './systems/path'
+import { human } from './systems/human'
 
 const init = async () => {
   assets.queue(
-    'pixel_room.glb',
-    '2d.glb'
+    'paths.obj',
+    'scene.glb',
+    'girl.glb'
   )
 
   await Promise.all([
-    physics.init(),
-    assets.load()
+    gl.init(),
+    assets.load(),
+    mouseControls.init()
   ])
 
-  const gltf = GLTF.parse(assets.get('2d.glb'), {
+  path.register('Sidewalk', assets.get('paths.obj'))
+
+  
+  human.add(GLTF.parse(assets.get('girl.glb'), {
+    shadows: true
+  }))
+  
+  const city = GLTF.parse(assets.get('scene.glb'), {
     shadows: true
   })
 
+  gl.scene.add(city.scene)
+  gl.ambientLight.intensity = 0.5
 
-  gl.scene.add(gltf.scene)
-  gl.setCamera(gltf.cameras[0])
+  gl.camera.position.set(50, 20, 50)
+  orbitControls.target.set(12.5, 0, 12.5)
 
-  gl.ambientLight.intensity = 0.1
+  requestAnimationFrame(() => {
+    gl.camera.lookAt(new Vector3())
+  })
 
-  console.log(gltf)
-
-  await gl.init()
-
-  // physics.addBox(bedroom.scene.getObjectByName('Floor'), { mass: 0 })
-  // physics.setRigidbodiesFromScene(bedroom.scene)
-  // physics.addBox(cube)
+  const frame = (dt: number) => {
+    orbitControls.update()
+    mouseControls.update()
+    text.update(dt)
+    animation.update(dt)
+    path.update(dt)
+    human.update()
+  }
 
   gl.setAnimationLoop(frame)
 }
