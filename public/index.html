@@ -7,8 +7,21 @@
     <title>ThreeJS Template</title>
     
     <style id="critical-css">
-      body { overflow: hidden; height: 100vh; margin: 0; background: #000 }
-      canvas { width: 100%; height: 100%; }
+      body {
+        overflow: hidden;
+        height: 100vh;
+        margin: 0;
+        background: #000;
+      }
+
+      body, button {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      }
+
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
 
       .screen-tip {
         pointer-events: none;
@@ -40,11 +53,45 @@
         border-right: 10px solid transparent;
         border-top: 10px solid #fff;
       }
+
+      .intro {
+        position: absolute;
+        color: white;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        transition: opacity 500ms;
+      }
+
+      .intro.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .intro button {
+        padding: 8px 16px;
+        background: #fff;
+        border: 0;
+        border-radius: 10px;
+        font-weight: 500;
+      }
+
+      .intro h1, .intro h3 {
+        width: 800px;
+      }
     </style>
 
     <link rel="modulepreload" href="index.js">
   </head>
   <body>
+    <div class="intro" onmousedown="this.classList.add('hidden')">
+      <h1>The residents of this city block have lost their connection to nature.</h1>
+      <h3>Help them find it again by reclaiming this abandoned lot.</h3>
+      <h3><button>Start</button></h3>
+    </div>
     <script defer type="module" src="index.js"></script>
   </body>
 </html>

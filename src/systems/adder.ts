@@ -5,7 +5,7 @@ import type {
 } from 'three'
 
 import { gl } from '../core/gl'
-import { plant } from './plant'
+import { environment } from './environment'
 
 const addables = new Map<string, Object3D>()
 
@@ -23,14 +23,13 @@ const addToWorld = (name: string, pos: Vector3, rot: Quaternion) => {
   addable.position.copy(pos)
   addable.quaternion.copy(rot)
 
-  plant.add(addable)
+  environment.registerPlant(addable)
 
   return addable
 }
 
 const register = (object: Object3D) => {
   addables.set(object.name, object)
-  console.log(addables)
 }
 
 export const adder = {

@@ -5,9 +5,10 @@ import { GLTF } from './core/gltf'
 import { orbitControls } from './controls/orbit'
 import { mouseControls } from './controls/mouse'
 import { animation } from './core/animation'
-import { text } from './core/text'
+import { ScreenTextBubble, text } from './core/text'
 import { path } from './systems/path'
 import { human } from './systems/human'
+import { environment } from './systems/environment'
 
 const init = async () => {
   assets.queue(
@@ -43,16 +44,14 @@ const init = async () => {
     gl.camera.lookAt(new Vector3())
   })
 
-  text.setScreenTipAbove(city.scene.getObjectByName('Grass'), 'hi')
-
-  setTimeout(() => {
-    text.clearScreenTip()
-  }, 2000)
+  setInterval(() => {
+    console.log(environment.getHealth())
+  }, 1000)
 
   const frame = (dt: number) => {
     orbitControls.update()
     mouseControls.update()
-    text.update(dt)
+    text.update()
     animation.update(dt)
     path.update(dt)
     human.update()

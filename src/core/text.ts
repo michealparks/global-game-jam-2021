@@ -1,62 +1,87 @@
 import { Tween, Easing } from '@tweenjs/tween.js'
-import type { Mesh } from 'three'
+import { Box3, Object3D } from 'three'
 
 import { Vector3 } from 'three'
 import { gl } from './gl'
 
-const screenTipNode = document.createElement('div')
-screenTipNode.classList.add('screen-tip')
-document.body.appendChild(screenTipNode)
-
-const ANIMATE_DURATION = 400
 const vec3 = new Vector3()
+const vec3_2 = new Vector3()
+const box3 = new Box3()
 
-let mesh: Mesh | null = null
+const textBubbles = new Set<ScreenTextBubble>()
 
-const animate = {
-  scale: 0
-}
+export class ScreenTextBubble {
+  active = false
+  node = document.createElement('div')
+  animationDuration = 400
+  animate = { scale: 0 }
 
-const update = (dt: number) => {
-  if (mesh === null) {
-    return
+  object: Object3D
+
+  constructor (object: Object3D) {
+    this.object = object
+    this.node.classList.add('screen-tip')
+    this.node.id = object.name
+    document.body.appendChild(this.node)
+
+    this.setScreenTipAbove = this.setScreenTipAbove.bind(this)
+    this.clearScreenTip = this.clearScreenTip.bind(this)
+    this.handleScreenTipEnd = this.handleScreenTipEnd.bind(this)
+
+    textBubbles.add(this)
   }
 
-  mesh.updateMatrix()
-  mesh.updateWorldMatrix(true, false)
-  mesh.getWorldPosition(vec3)
-  vec3.project(gl.camera)
+  update () {
+    if (this.active === false) {
+      return
+    }
 
-  const x = (vec3.x *  0.5 + 0.5) * gl.canvas.clientWidth
-  const y = (vec3.y * -0.5 + 0.5) * gl.canvas.clientHeight
+    this.object.updateMatrix()
+    this.object.updateWorldMatrix(true, false)
+    this.object.getWorldPosition(vec3)
+    box3.setFromObject(this.object)
+    box3.getSize(vec3_2)
 
-  screenTipNode.style.transform = `translate(-50%, -50%) translate(${x}px, ${y - 150}px) scale(${animate.scale})`
+    vec3.y += (vec3_2.y)
+
+    vec3.project(gl.camera)
+
+    const x = (vec3.x *  0.5 + 0.5) * gl.canvas.clientWidth
+    const y = (vec3.y * -0.5 + 0.5) * gl.canvas.clientHeight
+
+    this.node.style.transform = `translate(-50%, calc(-50%)) translate(${x}px, ${y - 50}px) scale(${this.animate.scale})`
+  }
+
+  setScreenTipAbove (text: string) {
+    console.log(this.node.id)
+    this.active = true
+    this.node.innerHTML = text
+
+    new Tween(this.animate)
+      .easing(Easing.Bounce.Out)
+      .to({ scale: 1 }, this.animationDuration)
+      .start()
+  }
+
+  clearScreenTip () {
+    new Tween(this.animate)
+      .easing(Easing.Quadratic.Out)
+      .to({ scale: 0 }, this.animationDuration)
+      .onComplete(this.handleScreenTipEnd)
+      .start()
+  }
+
+  handleScreenTipEnd () {
+    this.active = false
+  }
 }
 
-const setScreenTipAbove = (newMesh: Mesh, text: string) => {
-  mesh = newMesh
-  screenTipNode.innerHTML = text
-
-  new Tween(animate)
-    .easing(Easing.Bounce.Out)
-    .to({ scale: 1 }, ANIMATE_DURATION)
-    .start()
-}
-
-const clearScreenTip = () => {
-  new Tween(animate)
-    .easing(Easing.Quadratic.Out)
-    .to({ scale: 0 }, ANIMATE_DURATION)
-    .onComplete(handleScreenTipEnd)
-    .start()
-}
-
-const handleScreenTipEnd = () => {
-  mesh = null
+const update = () => {
+  for (const bubble of textBubbles) {
+    bubble.update()
+  }
 }
 
 export const text = {
-  update,
-  setScreenTipAbove,
-  clearScreenTip
+  update
 }
