@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ThreeJS Template</title>
+    
+    <style id="critical-css">
+      body {
+        overflow: hidden;
+        height: 100vh;
+        margin: 0;
+        background: #000;
+      }
+
+      body, button {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      }
+
+      canvas {
+        width: 100%;
+        height: 100%;
+        transition: opacity 2s;
+      }
+
+      .screen-tip {
+        pointer-events: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        font-family: Pixel FJVerdana;
+        font-size: 0.6rem;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 1);
+        padding: 5px 10px;
+        transform-origin: 50% 100%;
+      }
+
+      .screen-tip img {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+      }
+
+      .screen-tip::after {
+        position: absolute;
+        content: '';
+        width: 0; 
+        height: 0; 
+        bottom: -10px;
+        left: calc(50% - 10px);
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 10px solid #fff;
+      }
+
+      .intro {
+        position: absolute;
+        color: white;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        transition: opacity 500ms;
+        z-index: 1000;
+      }
+
+      .intro.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .black-bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 1);
+        transition: opacity 500ms;
+        z-index: -1;
+        opacity: 1;
+      }
+
+      .black-bg.hidden {
+        opacity: 0
+      }
+
+      .intro button {
+        padding: 8px 16px;
+        background: #fff;
+        border: 0;
+        border-radius: 10px;
+        font-weight: 500;
+      }
+
+      .intro h1, .intro h3 {
+        width: 800px;
+      }
+    </style>
+
+    <link rel="modulepreload" href="index.js">
+  </head>
+  <body>
+    <div class="intro" onmousedown="this.classList.add('hidden')">
+      <h1>The residents of this city block have lost their connection to nature.</h1>
+      <h3>Help them find it again by reclaiming this abandoned lot.</h3>
+      <h3><button>Start</button></h3>
+      <div class='black-bg'></div>
+    </div>
+    <script defer type="module" src="index.js"></script>
+    <script>
+      window.onload = () => {
+        document.querySelector('.black-bg').classList.add('hidden')
+      }
+    </script>
+  </body>
+</html>
