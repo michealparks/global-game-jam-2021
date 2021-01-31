@@ -22,8 +22,6 @@ const update = (dt: number) => {
     return
   }
 
-  console.log(animate)
-
   mesh.updateMatrix()
   mesh.updateWorldMatrix(true, false)
   mesh.getWorldPosition(vec3)

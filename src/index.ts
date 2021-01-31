@@ -43,6 +43,12 @@ const init = async () => {
     gl.camera.lookAt(new Vector3())
   })
 
+  text.setScreenTipAbove(city.scene.getObjectByName('Grass'), 'hi')
+
+  setTimeout(() => {
+    text.clearScreenTip()
+  }, 2000)
+
   const frame = (dt: number) => {
     orbitControls.update()
     mouseControls.update()
