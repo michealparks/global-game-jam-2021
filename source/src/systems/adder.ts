@@ -34,7 +34,6 @@ const addToWorld = (name: string, pos: Vector3, rot: Quaternion) => {
   environment.registerPlant(addable)
   
   const note = `note_${(Math.random() * 7 | 0) + 1}.mp3`
-  console.log(note)
   audio.play(note, true)
 
   return addable

@@ -65,8 +65,6 @@ const handleMouseUp = (e: MouseEvent) => {
   const absX = Math.abs(x - down.x)
   const absY = Math.abs(y - down.y)
 
-  console.log(absX, absY)
-  
   if (absX > 0.02 || absY > 0.02) {
     return
   }

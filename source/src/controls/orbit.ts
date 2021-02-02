@@ -182,7 +182,7 @@ class OrbitControls extends EventDispatcher {
     this.domElement.addEventListener( 'touchstart', this.onTouchStart )
     this.domElement.addEventListener( 'touchend', this.onTouchEnd )
     this.domElement.addEventListener( 'touchmove', this.onTouchMove )
-  
+
     this._hasEvents = true
   }
 
