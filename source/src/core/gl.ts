@@ -103,7 +103,7 @@ const init = async () => {
 
   const smaaEffect = new SMAAEffect(search, area, SMAAPreset.ULTRA)
 
-  let dofEffect = new DepthOfFieldEffect(camera, {
+  const dofEffect = new DepthOfFieldEffect(camera, {
     focusDistance: 0.4
   })
 
@@ -111,7 +111,7 @@ const init = async () => {
     camera,
     smaaEffect,
     bloomEffect,
-    dofEffect
+    // dofEffect
   )
 
   effectPass.renderToScreen = true
