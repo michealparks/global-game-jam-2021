@@ -41,7 +41,7 @@ const update = () => {
   }
 }
 
-const add = async (name: string) => {
+const add = async (name: string, position = Math.random()) => {
   const human = GLTF.parse(await assets.gltfLoader.loadAsync('girl.glb'), {
     shadows: true
   })
@@ -55,7 +55,7 @@ const add = async (name: string) => {
 
   gl.scene.add(human.scene)
 
-  path.traverse(human.scene, 'Sidewalk', Math.random())
+  path.traverse(human.scene, 'Sidewalk', position)
   humans.add(human.scene)
 }
 

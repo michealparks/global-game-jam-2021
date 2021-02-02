@@ -26,7 +26,8 @@ import {
   KernelSize,
   SSAOEffect,
   NormalPass,
-  DepthEffect
+  DepthEffect,
+  DepthOfFieldEffect
   // @ts-ignore
 } from 'postprocessing'
 
@@ -90,6 +91,7 @@ scene.add(ambientLight)
 const init = async () => {
   const bloomEffect = new BloomEffect({
     height: 480,
+    intensity: 1.5,
     kernelSize: KernelSize.VERY_LARGE
   })
 
@@ -101,10 +103,15 @@ const init = async () => {
 
   const smaaEffect = new SMAAEffect(search, area, SMAAPreset.ULTRA)
 
+  let dofEffect = new DepthOfFieldEffect(camera, {
+    focusDistance: 0.4
+  })
+
   const effectPass = new EffectPass(
     camera,
     smaaEffect,
-    bloomEffect
+    bloomEffect,
+    dofEffect
   )
 
   effectPass.renderToScreen = true
