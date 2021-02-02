@@ -53,7 +53,6 @@ export class ScreenTextBubble {
   }
 
   setScreenTipAbove (text: string) {
-    console.log(this.node.id)
     this.active = true
     this.node.innerHTML = text
 

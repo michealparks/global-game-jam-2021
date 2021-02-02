@@ -65,10 +65,6 @@ const init = async () => {
     gl.camera.lookAt(new Vector3())
   })
 
-  setInterval(() => {
-    console.log(environment.getHealth())
-  }, 1000)
-
   const frame = (dt: number) => {
     orbitControls.update()
     mouseControls.update()
