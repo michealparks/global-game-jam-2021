@@ -32,10 +32,6 @@ export class ScreenTextBubble {
   }
 
   update () {
-    if (this.active === false) {
-      return
-    }
-
     this.object.updateMatrix()
     this.object.updateWorldMatrix(true, false)
     this.object.getWorldPosition(vec3)
@@ -77,7 +73,9 @@ export class ScreenTextBubble {
 
 const update = () => {
   for (const bubble of textBubbles) {
-    bubble.update()
+    if (bubble.active === true) {
+      bubble.update()
+    }
   }
 }
 
