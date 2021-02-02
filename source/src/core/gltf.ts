@@ -18,6 +18,7 @@ import {
 import { PLANTS } from './constants'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { animation } from './animation'
+import { mouseControls } from '../controls/mouse'
 import { audio } from './audio'
 import { adder } from '../systems/adder'
 
@@ -82,6 +83,10 @@ const parse = (gltf: any, params: GLTFParams) => {
       }
     }
 
+    if (components.includes('ground') === true) {
+      mouseControls.addIntersectObject(object)
+    }
+
     // Init audio component
     if (components.includes('audio') === true) {
       audio.createPositional(userData.audio_file, object, userData.audio_refDistance)
@@ -90,7 +95,6 @@ const parse = (gltf: any, params: GLTFParams) => {
 
     if (components.includes('addable') === true) {
       adder.register(object)
-      remove.add(object)
     }
 
     if (components.includes('plant') === true) {
@@ -106,10 +110,6 @@ const parse = (gltf: any, params: GLTFParams) => {
     }
 
     animation.playClip(gltf.scene, animationClip.name)
-  }
-
-  for (const object of remove) {
-    // gltf.scene.remove(object)
   }
 
   return gltf

@@ -1,3 +1,5 @@
+import type { Object3D } from 'three'
+
 import {
   Intersection,
   Quaternion,
@@ -16,7 +18,6 @@ import {
 import { Tween, Easing } from '@tweenjs/tween.js'
 import { gl } from '../core/gl'
 import { adder } from '../systems/adder'
-import { orbitControls } from './orbit'
 
 const raycaster = new Raycaster()
 raycaster.far = FAR
@@ -25,9 +26,9 @@ const down = new Vector2()
 const mouse = new Vector2()
 const pos = new Vector3()
 const quat = new Quaternion()
+const intersectObjects: Object3D[] = []
 
 let intersect: Intersection
-let didChange = false
 
 const init = () => {
   gl.canvas.addEventListener('mousemove', handleMouseMove, PASSIVE)
@@ -44,7 +45,7 @@ const uninit = () => {
 const update = () => {
   raycaster.setFromCamera(mouse, gl.camera)
 
-  const intersects = raycaster.intersectObjects(gl.scene.children, true)
+  const intersects = raycaster.intersectObjects(intersectObjects)
 
   intersect = intersects[0]
 }
@@ -69,12 +70,8 @@ const handleMouseUp = (e: MouseEvent) => {
     return
   }
 
-  if (intersect.face === null || intersect.face === undefined) {
-    return
-  }
-
-  if (intersect.object.name.includes('Ground') === false) {
-    return
+  if (!intersect.face) {
+    throw new Error()
   }
 
   const { normal } = intersect.face
@@ -98,9 +95,14 @@ const getIntersection = () => {
   return intersect
 }
 
+const addIntersectObject = (object: Object3D) => {
+  intersectObjects.push(object)
+}
+
 export const mouseControls = {
   init,
   uninit,
   update,
-  getIntersection
+  getIntersection,
+  addIntersectObject
 }

@@ -133,9 +133,8 @@ const render = () => {
 
   fn(dt)
 
-  let width = canvas.clientWidth * window.devicePixelRatio | 0
-  let height = canvas.clientHeight * window.devicePixelRatio | 0
-  let zoom = 300
+  const width = canvas.clientWidth * window.devicePixelRatio | 0
+  const height = canvas.clientHeight * window.devicePixelRatio | 0
 
   if (canvas.width === width && canvas.height === height) {
     composer.render(dt)
