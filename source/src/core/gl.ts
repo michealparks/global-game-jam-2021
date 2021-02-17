@@ -95,7 +95,7 @@ const init = async () => {
     kernelSize: KernelSize.VERY_LARGE
   })
 
-  const smaaImageLoader  = new SMAAImageLoader()
+  const smaaImageLoader = new SMAAImageLoader()
 
   const [search, area] = await new Promise((resolve) =>
     smaaImageLoader.load(resolve)

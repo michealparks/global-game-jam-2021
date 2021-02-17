@@ -11,20 +11,18 @@ const box3 = new Box3()
 const selectionMenuScale = 0.05
 
 const addables = new Map<string, Object3D>()
+
 const selectionMenu = new Object3D()
 selectionMenu.name = 'Selection Menu'
+
 gl.camera.add(selectionMenu)
 gl.camera.getWorldDirection(vec3)
+
 selectionMenu.position.add(vec3)
 selectionMenu.position.y -= 0.2
 selectionMenu.position.x -= 0.35
 
 selectionMenu.scale.set(selectionMenuScale, selectionMenuScale, selectionMenuScale)
-setTimeout(() => {
-  console.log(vec3)
-  gl.camera.lookAt(selectionMenu.position)
-}, 1000)
-
 
 const addToWorld = (name: string, pos: Vector3, rot: Quaternion) => {
   const addable = addables.get(name)
@@ -52,6 +50,7 @@ let y = 0
 
 const register = (object: Object3D) => {
   addables.set(object.name, object)
+
   const clone = object.clone()
   clone.position.set(0, y, 0)
   clone.castShadow = false
@@ -63,7 +62,6 @@ const register = (object: Object3D) => {
   y += vec3.y + 0.2
 
   selectionMenu.add(clone)
-  
 }
 
 export const adder = {
