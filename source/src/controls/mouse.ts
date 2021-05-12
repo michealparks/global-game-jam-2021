@@ -84,7 +84,7 @@ const handleMouseUp = (e: MouseEvent) => {
 
   added.rotation.y = Math.random() * Math.PI * 2
   added.scale.set(0, 0, 0)
-
+ 
   new Tween(added.scale)
     .easing(Easing.Quintic.Out)
     .to({ x: 1, y: 1, z: 1 }, 2000)
