@@ -6,22 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Renewal by Micheal Parks</title>
 
-    <link rel="stylesheet" href="./src/index.css">
+    <link rel="stylesheet" href="./src/index.scss">
 
     <link rel="modulepreload" href="index.js">
   </head>
   <body>
-    <div class="intro" onmousedown="this.classList.add('hidden')">
-      <h1>The residents of this city block have lost their connection to nature.</h1>
-      <h3>Help them find it again by reclaiming this abandoned lot.</h3>
-      <h3><button id='btn-start'>Start</button></h3>
-      <div class='black-bg'></div>
-    </div>
-    <script async type="module" src="./src/index.ts"></script>
-    <script>
-      window.onload = () => {
-        document.querySelector('.black-bg').classList.add('hidden')
-      }
-    </script>
+    <div id="app"></div>
+    <script async type="module" src="./src/main.ts"></script>
   </body>
 </html>

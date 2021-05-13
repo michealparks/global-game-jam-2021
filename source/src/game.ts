@@ -10,7 +10,8 @@ import { path } from './systems/path'
 import { human } from './systems/human'
 import { audio } from './core/audio'
 
-const init = async () => {
+export const init = async () => {
+  console.log('hi')
   assets.queue(
     'paths.obj',
     'scene.glb',
@@ -77,5 +78,3 @@ const init = async () => {
 
   gl.setAnimationLoop(frame)
 }
-
-init()

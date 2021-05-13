@@ -25,6 +25,7 @@
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-filesize": "^9.1.1",
     "rollup-plugin-terser": "^7.0.2",
+    "sass": "^1.32.13",
     "three": "^0.128.0",
     "tslib": "^2.2.0",
     "tweakpane": "^2.4.3",
