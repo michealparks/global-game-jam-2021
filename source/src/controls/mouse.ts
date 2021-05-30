@@ -11,11 +11,12 @@ import {
 import {
   FAR,
   PASSIVE,
-  PLANTS,
   VECTOR_UP_Y
 } from '../core/constants'
 
+import { get } from 'svelte/store'
 import { Tween, Easing } from '@tweenjs/tween.js'
+import { selectedPlant  } from '../stores/selectedPlant'
 import { gl } from '../core/gl'
 import { adder } from '../systems/adder'
 
@@ -61,6 +62,12 @@ const handleMouseDown = (e: MouseEvent) => {
 }
 
 const handleMouseUp = (e: MouseEvent) => {
+  const selected = get(selectedPlant)
+
+  if (selected === null) {
+    return
+  }
+
   const x = (e.clientX / window.innerWidth) * 2 - 1
   const y = -(e.clientY / window.innerHeight) * 2 + 1
   const absX = Math.abs(x - down.x)
@@ -78,9 +85,8 @@ const handleMouseUp = (e: MouseEvent) => {
 
   pos.copy(intersect.point)
   quat.setFromUnitVectors(VECTOR_UP_Y, normal.clone().normalize())
-  
-  const name = PLANTS[Math.random() * PLANTS.length | 0]
-  const added = adder.addToWorld(name, pos, quat)
+
+  const added = adder.addToWorld(selected, pos, quat)
 
   added.rotation.y = Math.random() * Math.PI * 2
   added.scale.set(0, 0, 0)

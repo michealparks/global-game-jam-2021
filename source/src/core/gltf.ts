@@ -21,6 +21,7 @@ import { animation } from './animation'
 import { mouseControls } from '../controls/mouse'
 import { audio } from './audio'
 import { adder } from '../systems/adder'
+import { plants } from '../stores/plants'
 
 const gltfLoader = new GLTFLoader()
 
@@ -98,6 +99,7 @@ const parse = (gltf: any, params: GLTFParams) => {
     }
 
     if (components.includes('plant') === true) {
+      plants.update(arr => [...arr, object])
       PLANTS.push(object.name)
     }
   })

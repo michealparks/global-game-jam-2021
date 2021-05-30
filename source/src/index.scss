@@ -26,22 +26,22 @@ canvas {
   background: rgba(255, 255, 255, 1);
   padding: 5px 10px;
   transform-origin: 50% 100%;
-}
 
-.screen-tip img {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-}
+  &::after {
+    position: absolute;
+    content: '';
+    width: 0; 
+    height: 0; 
+    bottom: -10px;
+    left: calc(50% - 10px);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #fff;
+  }
 
-.screen-tip::after {
-  position: absolute;
-  content: '';
-  width: 0; 
-  height: 0; 
-  bottom: -10px;
-  left: calc(50% - 10px);
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 10px solid #fff;
+  img {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+  }
 }

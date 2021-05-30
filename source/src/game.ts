@@ -11,7 +11,6 @@ import { human } from './systems/human'
 import { audio } from './core/audio'
 
 export const init = async () => {
-  console.log('hi')
   assets.queue(
     'paths.obj',
     'scene.glb',
